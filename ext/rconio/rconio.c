@@ -60,24 +60,36 @@ VALUE method_ungetch(VALUE self, VALUE int_character)
     return INT2NUM(ret);
 }
 
-#if 0
 /*
  * call-seq:
  *      cgets(maxlength=256)    -> string
  *
  * Reads a string directly from the console.
  */
-VALUE method_cgets(VALUE self, VALUE int_maxlength=256)
+VALUE method_cgets(int argc, VALUE* argv, VALUE self)
 {
-}
+    // get the optional arg `maxlength`
+    VALUE int_maxlength;
+    rb_scan_args(argc, argv, "01", &int_maxlength);
 
-/*
- * Reads formatted values directly from the console.
- */
-VALUE method_cscanf(VALUE self)
-{
+    // use 254 if `maxlength` isn't set
+    int maxlength = NIL_P(int_maxlength) ? 254 : NUM2INT(int_maxlength);
+
+    char* buffer = malloc((maxlength+2) * sizeof(char));
+    if(!buffer)
+    {
+        rb_raise(rb_eNoMemError, "out of memory");
+        return Qnil;
+    }
+
+    buffer[0] = int_maxlength;
+    char* ret = _cgets(buffer);
+    VALUE string_ret = rb_str_new(ret, buffer[1]);
+
+    free(buffer);
+
+    return string_ret;
 }
-#endif
 
 /*
  * call-seq:
@@ -101,19 +113,34 @@ VALUE method_putch(VALUE self, VALUE int_character)
 VALUE method_cputs(VALUE self, VALUE string_string)
 {
     const char* title = StringValuePtr(string_string);
-    int ret = cputs(title);
+    int ret = _cputs(title);
     return INT2NUM(ret);
 }
 
 #if 0
 /*
- * Formats values and writes them directly to the console.
+ * call-seq:
+ *      cscanf(format, ??) -> number
+ *
+ * Reads formatted values directly from the console.
  */
-VALUE method_cprintf(VALUE self)
+VALUE method_cscanf(int argc, VALUE* argv, VALUE self)
 {
 }
-
 #endif
+
+#if 0
+/*
+ * call-seq:
+ *      cprintf(format, arguments...)   -> number
+ *
+ * Formats values and writes them directly to the console.
+ */
+VALUE method_cprintf(int argc, VALUE* argv, VALUE self)
+{
+}
+#endif
+
 
 void Init_rconio()
 {
@@ -123,7 +150,7 @@ void Init_rconio()
     rb_define_module_function(RConio, "getch", method_getch, 0);
     rb_define_module_function(RConio, "getche", method_getche, 0);
     rb_define_module_function(RConio, "ungetch", method_ungetch, 1);
-
+    rb_define_module_function(RConio, "cgets", method_putch,-1);
     rb_define_module_function(RConio, "putch", method_putch, 1);
     rb_define_module_function(RConio, "cputs", method_cputs, 1);
 }
