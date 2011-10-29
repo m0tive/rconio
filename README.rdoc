@@ -9,7 +9,7 @@ A wrapper for MS-DOS conio.h
 * `getche`:  Reads a character directly from the console without buffer, but with echo.
 * `ungetch(number)`:  Puts a character back into the keyboard buffer.
 * `putch(number)`:  Writes a character directly to the console.
-* `cgets()`:  Reads a string directly from the console.
+* `cgets(number=254)`:  Reads a string of given length directly from the console.
 * `cputs(string)`:  Writes a string directly to the console.
 
 === Todo
