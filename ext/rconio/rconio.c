@@ -74,6 +74,11 @@ VALUE method_cgets(int argc, VALUE* argv, VALUE self)
 
     // use 254 if `maxlength` isn't set
     int maxlength = NIL_P(int_maxlength) ? 254 : NUM2INT(int_maxlength);
+    if (maxlength < 1)
+    {
+        rb_raise(rb_eArgError, "size must be atleast 1");
+        return Qnil;
+    }
 
     char* buffer = malloc((maxlength+2) * sizeof(char));
     if(!buffer)
@@ -81,9 +86,18 @@ VALUE method_cgets(int argc, VALUE* argv, VALUE self)
         rb_raise(rb_eNoMemError, "out of memory");
         return Qnil;
     }
+    buffer[1] = buffer[2] = 0;
+    buffer[0] = maxlength;
 
-    buffer[0] = int_maxlength;
     char* ret = _cgets(buffer);
+
+    if (buffer[1] < 1)
+    {
+        if (buffer[1] < 0)
+            rb_raise(rb_eSystemCallError, "_cgets() returned string length of -1");
+        return Qnil;
+    }
+
     VALUE string_ret = rb_str_new(ret, buffer[1]);
 
     free(buffer);
@@ -150,7 +164,7 @@ void Init_rconio()
     rb_define_module_function(RConio, "getch", method_getch, 0);
     rb_define_module_function(RConio, "getche", method_getche, 0);
     rb_define_module_function(RConio, "ungetch", method_ungetch, 1);
-    rb_define_module_function(RConio, "cgets", method_putch,-1);
+    rb_define_module_function(RConio, "cgets", method_cgets,-1);
     rb_define_module_function(RConio, "putch", method_putch, 1);
     rb_define_module_function(RConio, "cputs", method_cputs, 1);
 }
