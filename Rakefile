@@ -7,8 +7,8 @@ spec = Gem::Specification.new do |s|
   s.version = "0.0.1"
   s.author = "Peter Dodds"
   s.email = "peter@pddds.com"
-  s.homepage = "http://pddds.com"
-  s.description = s.summary = "RConIO is a wrapper for MS-DOS conio.h"
+  s.homepage = "https://github.com/m0tive/rconio"
+  s.description = s.summary = "RConio is a wrapper for MS-DOS conio.h"
 
   s.platform = Gem::Platform::RUBY
   s.has_rdoc = true
