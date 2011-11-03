@@ -23,6 +23,10 @@ These methods in conio.h have not been implemented:
 
     gem install rconio
 
+== License
+
+see LICENSE
+
 == Credits
 
 * Peter Dodds, {website}[http://pddds.com]

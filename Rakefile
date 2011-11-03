@@ -5,21 +5,20 @@ require 'rake/extensiontask'
 spec = Gem::Specification.new do |s|
   s.name = "rconio"
   s.version = "0.0.1"
+  s.license = "MIT"
   s.author = "Peter Dodds"
   s.email = "peter@pddds.com"
   s.homepage = "https://github.com/m0tive/rconio"
-  s.description = s.summary = "RConio is a wrapper for MS-DOS conio.h"
+  s.summary = "A wrapper for MS-DOS conio.h"
+  s.description = "RConio is a wrapper for MS-DOS conio.h"
 
-  s.platform = Gem::Platform::RUBY
-  s.has_rdoc = true
-  #s.extra_rdoc_files = ["README.rdoc", "LICENSE"]
-
-  # Uncomment this to add a dependency
-  # s.add_dependency "foo"
+  s.platform = Gem::Platform::CURRENT
+  s.has_rdoc = false
+  s.extra_rdoc_files = ["README.rdoc", "LICENSE"]
 
   s.require_path = 'lib'
 
-  s.files = FileList["ext/**/*.{c,rb}", "Rakefile"]#, "README.rdoc", "LICENSE"]
+  s.files = FileList["ext/**/*.{c,rb}", "Rakefile", "README.rdoc", "LICENSE"]
   s.extensions = FileList["ext/**/extconf.rb"]
 end
 

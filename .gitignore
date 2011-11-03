@@ -1,2 +1,4 @@
 tmp
 lib
+pkg
+*.orig
